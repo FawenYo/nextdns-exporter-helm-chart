@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      containers:
+        - name: nextdns-exporter
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: app-secrets
+          ports:
+            - containerPort: {{ .Values.configurations.metrics.port }}
+              name: metrics
+              protocol: TCP
+          volumeMounts:
+            - name: app-config
+              mountPath: /etc/config/
+            - name: app-secrets
+              mountPath: /etc/secret/
+      volumes:
+        - name: app-config
+          configMap:
+            name: app-config
+        - name: app-secrets
+          secret:
+            secretName: app-secrets

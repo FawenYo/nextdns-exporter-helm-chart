@@ -1,0 +1,3 @@
+# Ignore YAML files since Helm templates may encounter formatting issues
+*.yaml
+*.yml

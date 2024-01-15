@@ -1,0 +1,18 @@
+app:
+  name: nextdns-exporter
+  image:
+    repository: ghcr.io/raylas/nextdns-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+
+configurations:
+  log_level: INFO
+  metrics:
+    port: 9948
+    path: /metrics
+  result:
+    window: -5m
+    limit: 50
+  nextdns:
+    profile: default
+    api_key: none

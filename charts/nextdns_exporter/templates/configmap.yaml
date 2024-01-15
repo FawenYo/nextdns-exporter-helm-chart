@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: {{ .Release.namespace }}
+data:
+  LOG_LEVEL: {{ .Values.configurations.log_level }}
+  METRICS_PORT: {{ .Values.configurations.metrics.port | quote }}
+  METRICS_PATH: {{ .Values.configurations.metrics.path }}
+  NEXTDNS_RESULT_WINDOW: {{ .Values.configurations.result.window }}
+  NEXTDNS_RESULT_LIMIT: {{ .Values.configurations.result.limit | quote }}
+  NEXTDNS_PROFILE: {{ .Values.configurations.nextdns.profile }}
